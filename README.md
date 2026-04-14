@@ -84,19 +84,24 @@ To move beyond descriptive analysis, five hypothesis tests were conducted to exa
 The following hypotheses were tested:
 
 1. **Reach Advantage Hypothesis**  
-   Fighters with a reach advantage are more likely to win.
+   Fighters with a reach advantage are more likely to win.  
+   **p-value: 0.371**
 
 2. **Southpaw Advantage Hypothesis**  
-   Southpaw fighters have a different win rate than orthodox fighters.
+   Southpaw fighters have a different win rate than orthodox fighters.  
+   **p-value: 0.205**
 
 3. **Grappling Advantage Hypothesis**  
-   Fighters with stronger grappling-related metrics are more likely to win.
+   Fighters with stronger grappling-related metrics are more likely to win.  
+   **p-value: 0.000...
 
 4. **Experience Advantage Hypothesis**  
-   More experienced fighters are more likely to win.
+   More experienced fighters are more likely to win.  
+   **p-value: 0.000...
 
 5. **Striking Advantage Hypothesis**  
-   Fighters with stronger striking-related metrics are more likely to win.
+   Fighters with stronger striking-related metrics are more likely to win.  
+   **p-value: 0.000...
 
 ### Statistical Approach
 The hypothesis testing stage uses:
@@ -110,11 +115,12 @@ Decision rule:
 
 ### Summary of Current Findings
 The current hypothesis testing results suggest that:
-- **reach advantage** is not statistically significant in this dataset
-- **southpaw stance** does not show a statistically significant advantage
-- **grappling-related advantage** is significantly associated with winning
-- **experience advantage** is significantly associated with winning
-- **striking-related advantage** is significantly associated with winning
+- **reach advantage** is not statistically significant in this dataset ❌
+- **southpaw stance** does not show a statistically significant advantage ❌
+- **grappling-related advantage** is significantly associated with winning ✅
+- **experience advantage** is significantly associated with winning ✅
+- **striking-related advantage** is significantly associated with winning ✅
+
 
 These findings should be interpreted as **exploratory statistical results** at the current stage of the project.
 
