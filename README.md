@@ -127,12 +127,193 @@ These findings should be interpreted as **exploratory statistical results** at t
 ### Important Methodological Note
 Some fighter-level aggregate statistics included in the merged dataset may reflect **overall career summaries at the time of data collection**, rather than values strictly available before each historical fight. Because of this, these variables are acceptable for **EDA and exploratory hypothesis testing**, but they will be treated more carefully in the modeling stage to reduce potential temporal leakage.
 
-### Next Step
-The next stage of the project will focus on:
-- refining the modeling feature set
-- reducing leakage risk
-- applying machine learning methods
-- comparing predictive models
-- building an interpretable UFC matchup intelligence system
+## Machine Learning Modeling
+
+After completing the data cleaning, EDA, and hypothesis testing stages, the project moved into the machine learning phase. The purpose of this stage was to evaluate how well matchup-level features can predict fight outcomes and to compare multiple modeling approaches under a realistic train-test setup.
+
+### Modeling Objective
+The modeling stage was designed to answer the following questions:
+- Can fight outcomes be predicted at a useful level using historical UFC data?
+- Which feature groups carry the strongest predictive signal?
+- Which machine learning model performs best on the processed dataset?
+- Can the resulting system remain interpretable while still achieving solid predictive performance?
+
+### Feature Set Strategy
+Two separate feature configurations were used during the modeling stage.
+
+#### 1. Safe Feature Set
+The safe feature set was designed to be methodologically cleaner and more conservative. It mainly includes:
+- physical matchup features such as height, weight, and reach differences
+- fighter-level height, weight, and reach values
+- stance information
+- weight class
+- time format
+- fight year
+- missing-value indicator flags
+
+This feature group was intended to reduce temporal leakage risk as much as possible.
+
+#### 2. Enriched Feature Set
+The enriched feature set extends the safe set by including broader performance-related aggregate features such as:
+- `wins_diff`
+- `losses_diff`
+- `draws_diff`
+- `avg_fight_time_diff`
+- `kd_diff`
+- `str_diff`
+- `td_diff`
+- `sub_diff`
+- `ctrl_diff`
+- `sig_str_pct_diff`
+- `sub_att_diff`
+- `ko_rate_diff`
+- `sub_rate_diff`
+- `dec_rate_diff`
+
+This second configuration was used to test whether richer fighter-level statistical signals improve predictive performance.
+
+### Models Trained
+The following models were trained and compared:
+- **Logistic Regression** as a baseline model
+- **Random Forest** as a nonlinear ensemble model
+- **XGBoost** as the strongest gradient-boosted tree benchmark
+
+### Train-Test Split Strategy
+A **temporal split** approach was used instead of a purely random split. Earlier fight years were used for training, while more recent fights were reserved for validation and test evaluation. This makes the evaluation more realistic and better aligned with a real prediction setting.
+
+### Evaluation Metrics
+The following metrics were used to evaluate model performance:
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- ROC-AUC
+- Brier Score
+- Calibration Curve
+- Confusion Matrix
+
+These metrics were chosen to evaluate not only classification accuracy, but also ranking quality, probability quality, and class-balance behavior.
+
+### Best Model
+The best-performing model in the current pipeline was:
+- **Model:** XGBoost
+- **Feature Set:** Enriched
+- **Validation ROC-AUC:** 0.7549
+- **Test Accuracy:** 0.7091
+- **Test Precision:** 0.7222
+- **Test Recall:** 0.7674
+- **Test F1-score:** 0.7441
+- **Test ROC-AUC:** 0.7981
+- **Test Brier Score:** 0.1792
+
+### Interpretation of Modeling Results
+The modeling results indicate that:
+- the **safe feature set** alone produced relatively weak predictive performance
+- the **enriched feature set** substantially improved model quality
+- **XGBoost** delivered the best overall predictive performance
+- **Random Forest** also performed strongly, especially in recall and F1-score
+- **Logistic Regression** remained useful as a baseline and interpretability reference model
+
+In practical terms, these results suggest that simple physical and contextual features alone are not sufficient to explain UFC outcomes at a strong level, while richer style- and performance-based features provide much stronger predictive signal.
+
+### Calibration and Reliability
+A calibration curve was generated for the best-performing model in order to evaluate whether predicted probabilities were reasonably aligned with observed outcomes. The resulting calibration pattern suggests that the probability estimates are usable and not purely overconfident, although there is still room for improvement in probability calibration.
+
+### Confusion Matrix Interpretation
+A confusion matrix was also generated for the best model. This helps show how well the model distinguishes wins and losses, and whether it tends to overpredict one class. In the current version, the model demonstrates a reasonable balance between identifying true wins and limiting false positives.
+
+### Error Analysis
+Error analysis was performed in order to better understand the cases where the model fails. Special attention was given to:
+- highly confident wrong predictions
+- possible upset fights
+- style mismatches
+- performance differences across fight contexts
+- the possible effect of missing values, especially reach-related missingness
+
+This analysis is important because it shows that the model is not only evaluated numerically, but also inspected qualitatively.
+
+---
+
+## Explainability
+
+Because FightIQ is designed as an **explainable UFC matchup intelligence system**, interpretability is a core component of the project.
+
+### Global Explainability
+Global feature importance was extracted in order to identify which variables influence the model most strongly. The current importance outputs suggest that the strongest signals come from:
+- finish-profile-related differences
+- striking-related differences
+- grappling/control differences
+- experience-related features
+
+### Local Explainability
+In addition to global importance, the project also includes local matchup-level explanation logic. This means that for a selected matchup, the system attempts to explain:
+- why Fighter A may be favored
+- which side has the stronger striking profile
+- which side has the stronger grappling profile
+- where upset risk may come from
+
+This layer is especially important for making the final application more readable and useful to non-technical users.
+
+---
+
+## Streamlit Web Application
+
+To make the project more interactive and portfolio-ready, FightIQ also includes a **Streamlit-based web application**.
+
+### App Purpose
+The purpose of the app is to transform the notebook-based workflow into a more accessible and user-facing demo. Instead of only showing model results in notebooks, the app allows users to directly interact with fighters, matchup comparisons, and project insights.
+
+### Current App Sections
+The current app includes three main sections:
+
+#### 1. Matchup Predictor
+This section allows the user to:
+- select two fighters
+- choose a fight year
+- choose a time format
+- generate a predicted win probability
+- inspect key advantages and risk flags
+- compare fighters through striking and grappling visualizations
+- view an overall fighter comparison table
+
+#### 2. Fighter Explorer
+This section allows the user to:
+- inspect an individual fighter profile
+- review physical attributes and career information
+- examine striking metrics
+- examine grappling metrics
+- explore their presence in the cleaned historical dataset
+
+#### 3. Project Insights
+This section summarizes:
+- model comparison outputs
+- hypothesis testing results
+- feature importance findings
+- methodological notes
+
+### App Design Goals
+The Streamlit app was built to be:
+- readable
+- interactive
+- explainable
+- suitable for portfolio presentation
+- aligned with the analytical logic of the project
+
+The application currently functions as a **project demo** rather than a production-grade scouting or betting system.
+
+---
+
+## Limitations
+
+The current version of the project has several limitations:
+- some fighter-level aggregate variables may carry **temporal leakage risk**
+- historical pre-fight information is not perfectly reconstructed for every fight
+- some variables still contain missing values, especially reach-related features
+- UFC fight outcomes are inherently noisy and influenced by many contextual factors not fully captured in the dataset
+- the current Streamlit application is a research and portfolio demo rather than a production-grade deployment
+
+These limitations are important and should be considered when interpreting both the statistical findings and the machine learning results.
+
+---
 ## Author
 Berk Talha Pala
