@@ -1,5 +1,6 @@
 # Fightiq-ufc-matchup-intelligence
 # FightIQ – Explainable UFC Matchup Intelligence
+Webapp link:https://fightiq-ufc-matchup-intelligence-fpadn2dwne9pixkob5aams.streamlit.app/
 
 ## Overview
 FightIQ is a machine learning project focused on analyzing UFC matchups using historical fight, fighter, and event data.
